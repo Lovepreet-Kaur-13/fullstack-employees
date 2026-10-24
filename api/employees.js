@@ -1,4 +1,4 @@
-import { getEmployees } from "#db/queries/employees";
+import { createEmployee, getEmployees } from "#db/queries/employees";
 import express from "express";
 const router = express.Router();
 export default router;
@@ -8,4 +8,16 @@ router.get("/", async (req, res) => {
   const employees = await getEmployees();
   console.log(employees);
   res.send(employees);
+});
+
+router.post("/", async (req, res) => {
+  if (!req.body) {
+    return res.status(400).send("req body is not provided");
+  }
+  const { name, birthday, salary } = req.body;
+  if (!name || !birthday || !salary) {
+    return res.status(400).send("missing required field");
+  }
+  const employee = await createEmployee({ name, birthday, salary });
+  res.status(201).send(employee);
 });
