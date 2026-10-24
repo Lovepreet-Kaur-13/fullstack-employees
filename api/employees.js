@@ -1,4 +1,8 @@
-import { createEmployee, getEmployees } from "#db/queries/employees";
+import {
+  createEmployee,
+  getEmployee,
+  getEmployees,
+} from "#db/queries/employees";
 import express from "express";
 const router = express.Router();
 export default router;
@@ -20,4 +24,13 @@ router.post("/", async (req, res) => {
   }
   const employee = await createEmployee({ name, birthday, salary });
   res.status(201).send(employee);
+});
+
+router.param("id", async (req, res, next, id) => {
+  const employee = await getEmployee(id);
+  if (!employee) {
+    return res.status(404).send("employee not exist with given id");
+  }
+  req.employee = employee;
+  next();
 });
