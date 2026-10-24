@@ -1,5 +1,6 @@
 import {
   createEmployee,
+  deleteEmployee,
   getEmployee,
   getEmployees,
 } from "#db/queries/employees";
@@ -37,4 +38,9 @@ router.param("id", async (req, res, next, id) => {
 
 router.get("/:id", (req, res) => {
   res.send(req.employee);
+});
+
+router.delete("/:id", async (req, res) => {
+  await deleteEmployee(req.employee.id);
+  res.sendStatus(204);
 });
