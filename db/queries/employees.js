@@ -21,9 +21,7 @@ export async function getEmployees() {
   const sql = `
   SELECT * FROM employees
   `;
-  const {
-    rows: [employees],
-  } = await db.query(sql);
+  const { rows: employees } = await db.query(sql);
   return employees;
 }
 
